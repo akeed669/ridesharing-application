@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: ridesharing-dev-312709
+  artifacts:
+    - image: us.gcr.io/ridesharing-dev-312709/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/index.ts'
+            dest: .
+
+# - src: 'src/**/*.ts'
