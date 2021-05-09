@@ -1,30 +1,13 @@
-import express from 'express';
-import { json } from 'body-parser';
 import mongoose from 'mongoose';
-
-import { currentUserRouter } from './routes/currentuser';
-import { loginRouter } from './routes/login';
-import { logoutRouter } from './routes/logout';
-import { signupRouter } from './routes/signup';
-import { errorHandler } from './middlewares/error-handler';
-import { InvalidRouteError } from './errors/invalid-route';
-
-const app = express();
-app.use(json());
-
-app.use(currentUserRouter);
-app.use(loginRouter);
-app.use(logoutRouter);
-app.use(signupRouter);
-
-app.all('*', async (req, res, next) => {
-  console.log('wtf hoson')
-  next(new InvalidRouteError());
-})
-
-app.use(errorHandler);
+import {app} from './app';
 
 const start = async () => {
+
+  // check if jwt key env variable is defined
+  if(!process.env.JWT_KEY){
+    throw new Error('JWT_KEY must be defined');
+  }
+
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
       useNewUrlParser: true,

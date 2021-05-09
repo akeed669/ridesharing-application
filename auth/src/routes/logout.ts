@@ -4,7 +4,8 @@ const router = express.Router();
 
 router.post('/api/users/logout',(req,res)=>{
 
-  res.send('Du, was geht?');
+  req.session = null;
+  res.send({});
 
 });
 
