@@ -20,8 +20,8 @@ app.use(cookieSession({
   // in order to make cookie content readable when using different backend
   // languages for the different services
   signed:false,
-  // will be used only when making https requests
-  secure:true
+  // cookies will be sent only when making https requests
+  secure:process.env.NODE_ENV !== 'test'
 }))
 
 app.use(currentUserRouter);
