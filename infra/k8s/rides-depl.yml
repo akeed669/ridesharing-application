@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: rides-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: rides
   template:
     metadata:
       labels:
-        app: auth
+        app: rides
     spec:
       containers:
-        - name: auth
-          image: us.gcr.io/ridesharing-dev-312709/auth
+        - name: rides
+          image: us.gcr.io/ridesharing-dev-312709/rides
           env:
             - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/auth'
+              value: 'mongodb://rides-mongo-srv:27017/tickets'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -28,12 +28,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: rides-srv
 spec:
   selector:
-    app: auth
+    app: rides
   ports:
-    - name: auth
+    - name: rides
       protocol: TCP
       port: 3000
       targetPort: 3000

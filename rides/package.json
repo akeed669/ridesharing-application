@@ -1,5 +1,5 @@
 {
-  "name": "auth",
+  "name": "rides",
   "version": "1.0.0",
   "description": "auth service for users",
   "main": "index.js",
@@ -17,7 +17,7 @@
   "author": "Akeed",
   "license": "ISC",
   "dependencies": {
-    "@orgakeed/commons": "^1.0.3",
+    "@orgakeed/commons": "^1.0.4",
     "@types/cookie-session": "^2.0.42",
     "@types/express": "^4.17.11",
     "@types/jsonwebtoken": "^8.5.1",

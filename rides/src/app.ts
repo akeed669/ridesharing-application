@@ -3,13 +3,11 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 
 import cookieSession from 'cookie-session';
-
-import { currentUserRouter } from './routes/current-user';
-import { loginRouter } from './routes/login';
-import { logoutRouter } from './routes/logout';
-import { signupRouter } from './routes/signup';
-import { errorHandler,InvalidRouteError } from '@orgakeed/commons';
-
+import { errorHandler,InvalidRouteError,currentUser } from '@orgakeed/commons';
+import { createRideRouter } from './routes/new';
+import { showRideRouter } from './routes/showOne';
+import { showAllRidesRouter } from './routes/showAll';
+import { updateRideRouter } from './routes/update';
 
 const app = express();
 // traffic comes through ingress nginx, i.e make express allow such traffic
@@ -24,13 +22,16 @@ app.use(cookieSession({
   secure:process.env.NODE_ENV !== 'test'
 }))
 
-app.use(currentUserRouter);
-app.use(loginRouter);
-app.use(logoutRouter);
-app.use(signupRouter);
+app.use(currentUser);
+
+app.use(createRideRouter);
+app.use(showRideRouter);
+app.use(showAllRidesRouter);
+app.use(updateRideRouter);
+
 
 app.all('*', async (req, res, next) => {
-  console.log('wtf hoson')
+  console.log('wtf hoson rides')
   next(new InvalidRouteError());
 })
 

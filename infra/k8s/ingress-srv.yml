@@ -14,3 +14,7 @@ spec:
             backend:
               serviceName: auth-srv
               servicePort: 3000
+          - path: /api/rides/?(.*)
+            backend:
+              serviceName: rides-srv
+              servicePort: 3000
