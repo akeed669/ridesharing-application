@@ -15,7 +15,7 @@ interface RideModel extends mongoose.Model<RideDoc>{
 // this interface describes the properties that an advertisement has
 interface RideDoc extends mongoose.Document{
   destination: string;
-  price: string;
+  price: number;
   userId:string;
 }
 

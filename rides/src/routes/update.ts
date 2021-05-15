@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { requireAuth, validateRequest, NotAuthorizedError, BadRequestError } from '@orgakeed/commons';
 import { body } from 'express-validator';
 import { Ride } from '../models/ride';
+import {RideUpdatedPublisher} from '../events/publishers/ride-updated-publisher';
+import {natsWrapper} from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -32,6 +34,15 @@ router.put('/api/rides/:id', requireAuth,
   });
 
   await ride.save();
+
+  await new RideUpdatedPublisher(natsWrapper.client).publish({
+
+    id: ride.id,
+    destination:ride.destination,
+    price:ride.price,
+    userId:ride.userId
+
+  });
 
   res.send(ride);
 

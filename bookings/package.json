@@ -1,5 +1,5 @@
 {
-  "name": "rides",
+  "name": "bookings",
   "version": "1.0.0",
   "description": "auth service for users",
   "main": "index.js",
