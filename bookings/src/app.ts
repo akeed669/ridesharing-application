@@ -4,10 +4,10 @@ import { json } from 'body-parser';
 
 import cookieSession from 'cookie-session';
 import { errorHandler,InvalidRouteError,currentUser } from '@orgakeed/commons';
-import { createRideRouter } from './routes/new';
-import { showRideRouter } from './routes/showOne';
-import { showAllRidesRouter } from './routes/showAll';
-import { updateRideRouter } from './routes/update';
+import { createBookingRouter } from './routes/new';
+import { showBookingRouter } from './routes/showOne';
+import { showAllBookingsRouter } from './routes/showAll';
+import { deleteBookingRouter } from './routes/delete';
 
 const app = express();
 // traffic comes through ingress nginx, i.e make express allow such traffic
@@ -24,10 +24,10 @@ app.use(cookieSession({
 
 app.use(currentUser);
 
-app.use(createRideRouter);
-app.use(showRideRouter);
-app.use(showAllRidesRouter);
-app.use(updateRideRouter);
+app.use(createBookingRouter);
+app.use(showBookingRouter);
+app.use(showAllBookingsRouter);
+app.use(deleteBookingRouter);
 
 
 app.all('*', async (req, res, next) => {

@@ -36,12 +36,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rides-srv
+  name: bookings-srv
 spec:
   selector:
-    app: rides
+    app: bookings
   ports:
-    - name: rides
+    - name: bookings
       protocol: TCP
       port: 3000
       targetPort: 3000

@@ -18,3 +18,7 @@ spec:
             backend:
               serviceName: rides-srv
               servicePort: 3000
+          - path: /api/bookings/?(.*)
+            backend:
+              serviceName: bookings-srv
+              servicePort: 3000

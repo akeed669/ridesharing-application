@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { requireAuth, validateRequest, NotAuthorizedError, BadRequestError } from '@orgakeed/commons';
+import { requireAuth, validateRequest, NotAuthorizedError, InvalidRouteError } from '@orgakeed/commons';
 import { body } from 'express-validator';
 import { Ride } from '../models/ride';
 import {RideUpdatedPublisher} from '../events/publishers/ride-updated-publisher';
@@ -21,7 +21,7 @@ router.put('/api/rides/:id', requireAuth,
   const ride = await Ride.findById(req.params.id);
 
   if(!ride){
-    throw new BadRequestError('Unable to find the desired advertisement');
+    throw new InvalidRouteError();
   }
 
   if(ride.userId !== req.currentUser!.id){

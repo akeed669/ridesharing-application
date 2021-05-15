@@ -28,4 +28,13 @@ build:
           - src: 'src/index.ts'
             dest: .
 
+    - image: us.gcr.io/ridesharing-dev-312709/bookings
+      context: bookings
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/index.ts'
+            dest: .
+
 # - src: 'src/**/*.ts'
