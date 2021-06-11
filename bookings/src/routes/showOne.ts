@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { Booking } from "../models/booking";
 import {
-  BadRequestError,
   requireAuth,
   InvalidRouteError,
   NotAuthorizedError,
@@ -20,7 +19,7 @@ router.get(
     if (!booking) {
       throw new InvalidRouteError();
     }
-
+    
     if (booking.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }

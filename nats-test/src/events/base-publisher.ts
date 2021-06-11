@@ -25,8 +25,6 @@ export abstract class Publisher<T extends Event>{
         resolve();
       });
     });
-
-
   }
 
 }

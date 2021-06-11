@@ -41,9 +41,20 @@ router.post(
 
     // check whether the ride has already been reserved
 
-    const isReserved = await ride.isReserved();
+    // const isReserved = await ride.isReserved();
 
-    if (isReserved) {
+    const existingBooking = await Booking.findOne({
+        ride: this,
+        status: {
+          $in: [
+            BookingStatus.Created,
+            BookingStatus.PaymentPending,
+            BookingStatus.Completed,
+          ],
+        },
+      });
+
+    if (existingBooking) {
       throw new BadRequestError("Ride is already booked!");
     }
 

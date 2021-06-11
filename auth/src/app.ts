@@ -12,18 +12,18 @@ import { errorHandler,InvalidRouteError } from '@orgakeed/commons';
 
 
 const app = express();
-// traffic comes through ingress nginx, i.e make express allow such traffic
+// since traffic is coming through an Ingress proxy, instruct Express to
+// allow such traffic
 app.set('trust proxy', true);
-app.use(json());
 app.use(cookieSession({
   // cookie encryption will be disabled
-  // in order to make cookie content readable when using different backend
-  // languages for the different services
   signed:false,
   // cookies will be sent only when making https requests
+  //secure:true;
   secure:process.env.NODE_ENV !== 'test'
 }))
 
+app.use(json());
 app.use(currentUserRouter);
 app.use(loginRouter);
 app.use(logoutRouter);

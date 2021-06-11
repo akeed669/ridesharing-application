@@ -1,38 +1,28 @@
-import express, { Request, Response } from "express";
-import {
-  requireAuth,
-  NotAuthorizedError,
-  InvalidRouteError,
-} from "@orgakeed/commons";
-import { natsWrapper } from "../nats-wrapper";
-import { Booking, BookingStatus } from "../models/booking";
+import express, {Request,Response} from 'express';
+import {Booking, BookingStatus} from '../models/booking';
+import {requireAuth, InvalidRouteError, NotAuthorizedError} from '@orgakeed/commons';
 
-const router = express.Router();
+const router=express.Router();
 
-router.delete(
-  "/api/bookings/:bookingId",
-  requireAuth,
-  async (req: Request, res: Response) => {
-    const { bookingId } = req.params;
+router.delete('/api/bookings/:bookingId', requireAuth, async(req:Request,res:Response)=>{
+  const {bookingId}  = req.params;
 
-    const booking = Booking.findById(bookingId);
+  const booking = await Booking.findById(bookingId);
 
-    if (!booking) {
-      throw new InvalidRouteError();
-    }
-
-    if (booking.userId !== req.currentUser!.id) {
-      throw new NotAuthorizedError();
-    }
-
-    booking.status = BookingStatus.Canceled;
-
-    await booking.save();
-
-    // publish an event notifying that a booking was canceled
-
-    res.send(booking);
+  if (!booking) {
+    throw new InvalidRouteError();
   }
-);
 
-export { router as deleteBookingRouter };
+  if (booking.userId !== req.currentUser!.id) {
+    throw new NotAuthorizedError();
+  }
+
+  booking.status=BookingStatus.Canceled;
+
+  await booking.save();
+
+  // this route handler is actually a PUT method since nothing is being deleted from the DB
+  res.status(204).send(booking);
+});
+
+export {router as deleteBookingRouter };
