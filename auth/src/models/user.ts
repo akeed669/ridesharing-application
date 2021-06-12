@@ -20,6 +20,7 @@ interface UserDoc extends mongoose.Document{
 
 const userSchema = new mongoose.Schema({
   email:{
+    //these types are mongoose types
     type:String,
     required:true
   },

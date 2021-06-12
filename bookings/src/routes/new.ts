@@ -11,6 +11,7 @@ import { body } from "express-validator";
 import { Ride } from "../models/ride";
 import { natsWrapper } from "../nats-wrapper";
 import { Booking } from "../models/booking";
+import { BookingCreatedPublisher } from "../events/publishers/booking-created-publisher";
 
 const router = express.Router();
 
@@ -44,15 +45,15 @@ router.post(
     // const isReserved = await ride.isReserved();
 
     const existingBooking = await Booking.findOne({
-        ride: this,
-        status: {
-          $in: [
-            BookingStatus.Created,
-            BookingStatus.PaymentPending,
-            BookingStatus.Completed,
-          ],
-        },
-      });
+      ride: this,
+      status: {
+        $in: [
+          BookingStatus.Created,
+          BookingStatus.PaymentPending,
+          BookingStatus.Completed,
+        ],
+      },
+    });
 
     if (existingBooking) {
       throw new BadRequestError("Ride is already booked!");
@@ -75,6 +76,16 @@ router.post(
     await booking.save();
 
     // publish an event notifying that a booking was created
+    new BookingCreatedPublisher(natsWrapper.client).publish({
+      id: booking.id,
+      userId: booking.userId,
+      expiresAt: booking.expiresAt.toISOString(),
+      status: booking.status,
+      ride: {
+        id: ride.id,
+        price: ride.price,
+      },
+    });
     res.status(201).send(booking);
   }
 );
