@@ -11,14 +11,16 @@ export class RidePostedListener extends Listener<RidePostedEvent> {
   subject: Subjects.RidePosted = Subjects.RidePosted;
   queueGroupName = QueueGroups.BookingServiceQueue;
   async onMessage(data: RidePostedEvent["data"], msg: Message) {
-    const { userId, destination, price } = data;
+    const { id, destination, price } = data;
 
     const ride = Ride.build({
-      userId,
+      id,
       destination,
       price,
     });
 
     await ride.save();
+
+    msg.ack();
   }
 }

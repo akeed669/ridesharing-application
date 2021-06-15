@@ -1,55 +1,67 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // this interface describes the properties required to create a new ridesharing advertisement
-interface RideAttrs{
+interface RideAttrs {
   destination: string;
   price: number;
-  userId:string;
+  userId: string;
 }
 
 // this interface describes the properties that an advertisement has
-interface RideModel extends mongoose.Model<RideDoc>{
+interface RideModel extends mongoose.Model<RideDoc> {
   build(attrs: RideAttrs): RideDoc;
 }
 
 // this interface describes the properties that an advertisement has
-interface RideDoc extends mongoose.Document{
+interface RideDoc extends mongoose.Document {
   destination: string;
   price: number;
-  userId:string;
+  userId: string;
+  version: number;
+  bookingId?: string;
 }
 
-const rideSchema = new mongoose.Schema({
-  destination:{
-    type:String,
-    required:true
+const rideSchema = new mongoose.Schema(
+  {
+    destination: {
+      type: String,
+      required: true,
+    },
+
+    price: {
+      type: Number,
+      required: true,
+    },
+
+    userId: {
+      type: String,
+      required: true,
+    },
+
+    bookingId: {
+      type: String,
+    },
   },
 
-  price:{
-    type:Number,
-    required:true
-  },
-
-  userId:{
-    type:String,
-    required:true
-  },
-},
-
-//transform the mongoose return object into a custom view
-{
-  toJSON:{
-    transform(doc,ret){
-      ret.id=ret._id;
-      delete ret._id
-    }
+  //transform the mongoose return object into a custom view
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+      },
+    },
   }
-});
+);
+
+rideSchema.set("versionKey", "version");
+rideSchema.plugin(updateIfCurrentPlugin);
 
 rideSchema.statics.build = (attrs: RideAttrs) => {
   return new Ride(attrs);
 };
 
-const Ride = mongoose.model<RideDoc,RideModel>('Ride',rideSchema);
+const Ride = mongoose.model<RideDoc, RideModel>("Ride", rideSchema);
 
-export {Ride};
+export { Ride };

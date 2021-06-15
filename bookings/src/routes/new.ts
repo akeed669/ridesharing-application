@@ -85,6 +85,7 @@ router.post(
         id: ride.id,
         price: ride.price,
       },
+      version: booking.version,
     });
     res.status(201).send(booking);
   }

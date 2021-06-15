@@ -1,28 +1,38 @@
 import mongoose from "mongoose";
 import { Booking, BookingStatus } from "./booking";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // this interface describes the properties required to create a new ridesharing advertisement
 interface RideAttrs {
+  id: string;
   destination: string;
   price: number;
-  userId: string;
+  // userId:string;
 }
 
 // this interface describes the properties that an advertisement has
 interface RideModel extends mongoose.Model<RideDoc> {
   build(attrs: RideAttrs): RideDoc;
+  findByEvent(event: { id: string; version: number }): Promise<RideDoc | null>;
 }
 
 // this interface describes the properties that an advertisement has
 export interface RideDoc extends mongoose.Document {
+  id: string;
   destination: string;
   price: number;
-  userId: string;
+  version: number;
+  // userId:string;
   // isReserved(): Promise<boolean>;
 }
 
 const rideSchema = new mongoose.Schema(
   {
+    // id: {
+    //   type: String,
+    //   required: true,
+    // },
+
     destination: {
       type: String,
       required: true,
@@ -34,10 +44,10 @@ const rideSchema = new mongoose.Schema(
       min: 0,
     },
 
-    userId: {
-      type: String,
-      required: true,
-    },
+    // userId: {
+    //   type: String,
+    //   required: true,
+    // },
   },
 
   //transform the mongoose return object into a custom view
@@ -51,10 +61,24 @@ const rideSchema = new mongoose.Schema(
   }
 );
 
+rideSchema.set("versionKey", "version");
+rideSchema.plugin(updateIfCurrentPlugin);
+
 // adding a method directly to the model
 
+rideSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Ride.findOne({
+    _id: event.id,
+    version: event.version,
+  });
+};
+
 rideSchema.statics.build = (attrs: RideAttrs) => {
-  return new Ride(attrs);
+  return new Ride({
+    _id: attrs.id,
+    destination: attrs.destination,
+    price: attrs.price,
+  });
 };
 
 // adding a method directly to a document

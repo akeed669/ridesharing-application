@@ -36,6 +36,7 @@ router.delete(
       ride: {
         id: booking.ride.id,
       },
+      version: booking.version,
     });
 
     // this route handler is actually a PUT method since nothing is being deleted from the DB

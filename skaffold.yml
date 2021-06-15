@@ -16,7 +16,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'src/index.ts'
+          - src: "src/index.ts"
             dest: .
 
     - image: us.gcr.io/ridesharing-dev-312709/rides
@@ -25,7 +25,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'src/index.ts'
+          - src: "src/index.ts"
             dest: .
 
     - image: us.gcr.io/ridesharing-dev-312709/bookings
@@ -34,7 +34,14 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'src/index.ts'
+          - src: "src/index.ts"
             dest: .
-
+    - image: us.gcr.io/ridesharing-dev-312709/expiry
+      context: bookings
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/index.ts"
+            dest: .
 # - src: 'src/**/*.ts'
