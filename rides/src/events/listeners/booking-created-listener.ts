@@ -27,7 +27,6 @@ export class BookingCreatedListener extends Listener<BookingCreatedEvent> {
 
     //save the ride to the DB
     await ride.save();
-
     //await is used so that if anything fails when publishing
     //the event below, it will not be acked
     await new RideUpdatedPublisher(this.client).publish({

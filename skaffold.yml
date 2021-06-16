@@ -37,7 +37,7 @@ build:
           - src: "src/index.ts"
             dest: .
     - image: us.gcr.io/ridesharing-dev-312709/expiry
-      context: bookings
+      context: expiry
       docker:
         dockerfile: Dockerfile
       sync:

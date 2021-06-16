@@ -15,7 +15,7 @@ import { BookingCreatedPublisher } from "../events/publishers/booking-created-pu
 
 const router = express.Router();
 
-const EXPIRY_TIME_SECONDS = 20 * 60;
+const EXPIRY_TIME_SECONDS = 1 * 60;
 
 router.post(
   "/api/bookings",

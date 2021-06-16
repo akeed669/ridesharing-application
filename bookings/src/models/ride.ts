@@ -67,9 +67,10 @@ rideSchema.plugin(updateIfCurrentPlugin);
 // adding a method directly to the model
 
 rideSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  // console.log(`this is the id ${event.id} and version ${event.version}`);
   return Ride.findOne({
     _id: event.id,
-    version: event.version,
+    version: event.version - 1,
   });
 };
 

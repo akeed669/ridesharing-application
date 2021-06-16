@@ -1,4 +1,5 @@
 // importing an instance of the class
+import { BookingCreatedListener } from "./events/listeners/booking-created-listener";
 import { natsWrapper } from "./nats-wrapper";
 
 const start = async () => {
@@ -28,6 +29,8 @@ const start = async () => {
 
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
+
+    new BookingCreatedListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
   }
