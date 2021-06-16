@@ -10,7 +10,7 @@ import { expiryQueue } from "../../queues/expiry-queue";
 
 export class BookingCreatedListener extends Listener<BookingCreatedEvent> {
   subject: Subjects.BookingCreated = Subjects.BookingCreated;
-  queueGroupName = QueueGroups.PaymentServiceQueue; //CHANGE THIS!!!!
+  queueGroupName = QueueGroups.ExpiryServiceQueue;
 
   async onMessage(data: BookingCreatedEvent["data"], msg: Message) {
     const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
