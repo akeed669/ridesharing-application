@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: expiry-depl
+  name: expiration-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: expiry
+      app: expiration
   template:
     metadata:
       labels:
-        app: expiry
+        app: expiration
     spec:
       containers:
-        - name: expiry
-          image: us.gcr.io/ridesharing-dev-312709/expiry
+        - name: expiration
+          image: us.gcr.io/ridesharing-dev-312709/expiration
           env:
             - name: NATS_CLIENT_ID
               valueFrom:
@@ -25,4 +25,4 @@ spec:
             - name: NATS_CLUSTER_ID
               value: carpooling
             - name: REDIS_HOST
-              value: expiry-redis-srv
+              value: expiration-redis-srv

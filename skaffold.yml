@@ -36,8 +36,16 @@ build:
         manual:
           - src: "src/index.ts"
             dest: .
-    - image: us.gcr.io/ridesharing-dev-312709/expiry
-      context: expiry
+    - image: us.gcr.io/ridesharing-dev-312709/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/index.ts"
+            dest: .
+    - image: us.gcr.io/ridesharing-dev-312709/payments
+      context: payments
       docker:
         dockerfile: Dockerfile
       sync:
