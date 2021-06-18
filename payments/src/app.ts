@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
+import { createChargeRouter } from "./routes/new";
 
 import cookieSession from "cookie-session";
 import {
@@ -25,6 +26,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(createChargeRouter);
 
 app.all("*", async (req, res, next) => {
   console.log("wtf hoson rides");

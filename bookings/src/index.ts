@@ -5,6 +5,7 @@ import { natsWrapper } from "./nats-wrapper";
 import { RidePostedListener } from "./events/listeners/ride-posted-listener";
 import { RideUpdatedListener } from "./events/listeners/ride-updated-listener";
 import { BookingExpiredListener } from "./events/listeners/booking-expired-listener";
+import { PaymentReceivedListener } from "./events/listeners/payment-received-listener";
 
 const start = async () => {
   // check if jwt key env variable is defined
@@ -46,6 +47,7 @@ const start = async () => {
     new RidePostedListener(natsWrapper.client).listen();
     new RideUpdatedListener(natsWrapper.client).listen();
     new BookingExpiredListener(natsWrapper.client).listen();
+    new PaymentReceivedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
