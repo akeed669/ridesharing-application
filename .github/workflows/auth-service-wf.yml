@@ -1,4 +1,4 @@
-name: test_action
+name: auth-service-wf
 
 on:
   pull_request
